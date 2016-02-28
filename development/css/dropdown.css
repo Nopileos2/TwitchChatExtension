@@ -1,5 +1,5 @@
 #menu {
-    font-size:10px;
+    font-size:15px;
     position:relative;
     display: inline;
 }
@@ -10,21 +10,18 @@
 }
 
 #menu li.topmenu {
-    float:right;
+
 }
 
 .topmenu{
-    margin-right: 50px;
+    margin-left: 10px;
 }
 .topmenu a {
-    float:right;
+
     width:10px;
     text-align:center;
 }
 
-.topmenu ul{
-    display:none;
-}
 
 .topmenu a, .submenu a{
     border-collapse:collapse;
@@ -36,7 +33,7 @@
 
 
 .submenu {
-    font-size:10px;
+    font-size:12px;
     width:50px;
     position:relative;
     cursor: pointer;
@@ -49,15 +46,16 @@
     color:#4C4C4C;
 }
 
-.topmenu:hover ul {
-    display: block;
-    position: absolute;
-    z-index: 500;
+
+.topmenu-options:hover{
+    cursor: pointer;
 }
 
 .dropdown-inner{
     display:none;
     margin-left: 10px;
+    position:relative;
+    z-index: 500;
 }
 
 .dropdown-outer{
@@ -66,4 +64,9 @@
 
 ol  {
     list-style: none;
+}
+
+.edit-input{
+    width: 160px;
+    font-size: 12px;
 }

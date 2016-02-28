@@ -2,7 +2,7 @@
 var idOfTextarea;
 var localStorageData = {};
 var localStorageKey = "TCExt";
-
+var ItemInEdit = false;
 
 //////////////
 function loadLocalStorage(){
@@ -56,8 +56,8 @@ function addDiv(){
             <br> <button id=TExChShowCommands class=AddButton>Show Keys</button> <button id=TExChReloadStorage class="AddButton secondCol">Reload S.</button>\
         </div>\
         <div id=TExChSecond class="tab active">\
-        <textarea id=TExChTextField3 class=TExChTextField3 ></textarea>\
-            <div class="tce-scroll-content">\
+        <textarea id=TExChTextField3 class=TExChTextField3 disabled></textarea>\
+            <div id=tce-scroll-content class="tce-scroll-content">\
                 <ol id=\'tce-itemlist\'>\
                 </ol>\
             </div>\
@@ -90,6 +90,7 @@ function addDiv(){
         $(Textbox1).val("");
         if(!added) localStorageData.array.push([newKey,newMessage]);
         sortArray();
+        updateKeyList();
         $(Textbox2).val("Key: "+ newKey +" was added");
     });
 
@@ -275,11 +276,11 @@ function dummy(){
     console.log("dummy");
 }
 function addItemToItemList(name){
-        $("#tce-itemlist").append("<div><div class=\"tce-item\" >"+name+"</div>\
+        $("#tce-itemlist").append("<div><div class=\"tce-item-div\"><b class=tce-item>"+name+"</b></div>\
     <div id=\"menu\">\
     <ul class='dropdown-outer'>\
         <li class=topmenu>\
-            <a href=\"\">▾</a>\
+            <a class='topmenu-options'>▹</a>\
             <ul class='dropdown-inner'>\
                 <li class=\"submenu submenu-edit\">Edit</li>\
                 <li class=\"submenu submenu-del\">Delete</li>\
@@ -290,23 +291,82 @@ function addItemToItemList(name){
     </div>\
     </div>");
 }
+function getStorageEntry(key){
+    for(var n = 0; n<localStorageData.array.length;n++) {
+        if (key == localStorageData.array[n][0]) return localStorageData.array[n][1];
+    }
+}
+function deleteEntry(deleteKey){
+    for(var k = 0; k<localStorageData.array.length;k++){
+        if(deleteKey == localStorageData.array[k][0])  localStorageData.array.splice(k,1);
+    }
+    saveLocalStorage();
+}
+function deleteItemList(){
+    $("#tce-itemlist").remove();
+    $("#tce-scroll-content").append('<ol id=\'tce-itemlist\'>\
+                                        </ol>');
+}
 function updateKeyList(){
+    deleteItemList();
+    var oldKey ="";
     var Textbox3 = ".TExChTextField3";
     for(var p=0;p<localStorageData.array.length;p++){
         addItemToItemList(localStorageData.array[p][0]);
     }
     $(".tce-item").click(function(e){
-        for(var m = 0; m<localStorageData.array.length;m++) {
-            if (e.target.textContent == localStorageData.array[m][0]) $(Textbox3).val(localStorageData.array[m][1]);
+         $(Textbox3).val(getStorageEntry(e.target.textContent));
+    });
+    $(".topmenu-options").click(function(e){
+        var targetMenu = e.target.parentNode.getElementsByClassName("dropdown-inner")[0];
+        if(targetMenu.style.display =='inline'){ targetMenu.style.display ="none"; }
+        else {
+            targetMenu.style.display = "inline";
         }
     });
-    $(".submenu-edit").click(function(e){
-       var keyToEdit = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item")[0].textContent;
-        for(var o=0;o<localStorageData.array.length;o++){
-            if(localStorageData.array[o][0] == keyToEdit){
-                localStorageData.array[o][0] = keyToEdit;
+
+   $(".submenu-edit").click(function(e){
+       if(ItemInEdit) {
+           $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
+       }
+        ItemInEdit=true;
+
+        var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
+        var keyToEdit = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
+        oldKey = keyToEdit;
+
+       $(Textbox3).removeAttr("disabled");
+        //ElementToEdit.textContent = "";
+        ElementToEdit.innerHTML = '<input class="edit-input" maxlength=20 required="" value='+keyToEdit+'>';
+       $(Textbox3).val(getStorageEntry(keyToEdit));
+    });
+
+    $(".submenu-save").click(function(e){
+        var keyToSave = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0].getElementsByClassName('edit-input')[0].value;
+        var newMessage = $(Textbox3).val();
+        var added = false;
+        for(var k = 0; k<localStorageData.array.length;k++){
+            if(keyToSave == localStorageData.array[k][0]) {
+                localStorageData.array[k][1] = newMessage;
+                added = true;
             }
         }
+        if(!added) localStorageData.array.push([keyToSave,newMessage]);
+
+        if(oldKey != keyToSave) {
+            deleteEntry(oldKey);
+            sortArray();
+        }
+        $(Textbox3).attr("disabled","disabled");
+        updateKeyList();
+        ItemInEdit = false;
+    });
+
+    $(".submenu-del").click(function(e){
+        var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
+        var keyToDelete = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
+        deleteEntry(keyToDelete);
+        updateKeyList();
     });
 }
 
@@ -320,9 +380,10 @@ window.onload = function () {
         loadLocalStorage();
         changeTheme();
         addTabsFunction();
-        updateKeyList()
+        updateKeyList();
 
         $("#TExChButton").click(function(){
+            $("#TExChTextField1").attr("maxlength","20");
             $("#TExChTextField2").attr("maxlength","10000");
             $("#Options-Wrapper").toggleClass("hidden");
         });
@@ -346,8 +407,7 @@ window.onload = function () {
             }
         }
         });
-        clearInterval(IID);
-        if($("#TExChButton").val() != 3){ clearInterval(IID)}
+        if($("#TExChButton").attr("id") == "TExChButton"){ clearInterval(IID)}
     },2000)
 };
 

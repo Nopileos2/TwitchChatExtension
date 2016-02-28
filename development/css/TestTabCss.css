@@ -51,10 +51,31 @@ li.active a, li.active a:hover {
     display:none;
 }
 
+
+.tce-scroll-content::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.tce-scroll-content::-webkit-scrollbar-button {
+    width: 20px;
+    height: 20px;
+}
+.tce-scroll-content::-webkit-scrollbar-thumb {
+    background: #e1e1e1;
+    border: 52px none #ffffff;
+    border-radius: 1px;
+}
+
+.tce-scroll-content::-webkit-scrollbar-track {
+    background: #989898;
+    border: 53px none #ffffff;
+    border-radius: 44px;
+}
+
+
 .tce-scroll-content{
-    width: 260px;
+    width: 300px;
     height: 260px;
-    border: dashed;
     overflow-y: scroll;
 }
 
@@ -66,9 +87,16 @@ ol  {
     text-decoration: none;
     cursor: pointer;
 }
+
 .tce-item{
     color: #d3d3d3;
     text-decoration: none;
     display: inline;
-    width: 50px;
+    width: 155px;
+    font-size: 12px;
+    float:left;
+}
+
+.tce-item-div{
+    display:inline;
 }

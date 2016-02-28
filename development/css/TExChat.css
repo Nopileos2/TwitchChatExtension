@@ -20,7 +20,9 @@
     height: 170px;
     width: 300px;
 }
-
+.TExChTextField3::-webkit-scrollbar{
+    display:none;
+}
 .TExChDiv {
     z-index: 9999999;
     width: 320px;
