@@ -1,0 +1,80 @@
+.onoffswitch2 {
+    position: relative;
+    width: 51px;
+    bottom: 24px;
+    left:105px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.onoffswitch-checkbox2 {
+    display: none;
+}
+
+.onoffswitch-label2 {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #c3c3c3;
+    border-radius: 13px;
+}
+
+.onoffswitch-inner2 {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner2:before, .onoffswitch-inner2:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 17px;
+    padding: 0;
+    line-height: 17px;
+    font-size: 11px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner2:before {
+    content: "ON";
+    padding-left: 5px;
+    background-color: #eeeeee;
+    color: #6441a5;
+}
+
+.onoffswitch-inner2:after {
+    content: "OFF";
+    padding-right: 5px;
+    background-color: #bebebe;
+    color: #f8f8f8;
+    text-align: right;
+}
+
+.onoffswitch-switch2 {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 1px;
+    background: #6441a5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 30px;
+    border: 1px solid #e3e3e3;
+    border-radius: 13px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-inner2 {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-switch2 {
+    right: 0px;
+}

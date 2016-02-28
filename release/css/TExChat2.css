@@ -1,0 +1,59 @@
+.TExChTextField1 {
+    margin-top: 7px;
+    resize: none;
+    height: 40px;
+    width: 100px;
+}
+
+.TExChTextField2 {
+    margin-top: 7px;
+    margin-bottom: 10px;
+    resize: none;
+    height: 150px;
+    width: 250px;
+}
+
+.TExChDiv2 {
+    z-index: 9999999;
+    width: 300px;
+    height: 520px;
+    border: 1px solid rgb(241, 238, 238);
+    margin-bottom: 4.6px;
+    position: absolute;
+    bottom: 50px;
+    background: rgb(250, 250, 250);
+    border-radius: 2px;
+    margin-left: 5px;
+    display: block;
+}
+
+.btnC2 {
+    color: #6441A5!important;
+    width: 38px;
+}
+
+.AddButton2 {
+    width: 115px;
+    margin-top: 10px;
+    margin-left: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #000000;
+    font-size: 12px;
+    background: #F0F0F0;
+    padding: 10px 15px 10px 15px;
+    border: solid #F1EEEE 1.5px;
+    text-decoration: none;
+}
+
+.AddButton2:hover {
+    background: #C8C8C8;
+    text-decoration: none;
+}
+
+.secondCol2 {
+    float: right;
+    margin-right: 20px;
+}

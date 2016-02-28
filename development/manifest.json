@@ -1,0 +1,39 @@
+{
+  "name": "Twitchchat",
+  "description": "extension for twitch chat",
+  "icons": {
+
+  },
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_title": "extension for twitch chat",
+    "default_popup":"popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.twitch.tv/*"
+      ],
+      "js": [
+        "js/main.js",
+        "js/jquery-2.2.0.min.js",
+        "js/FileSaver.js"
+      ],
+      "css": [
+        "css/switch.css",
+        "css/TExChat.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "resources/*",
+    "partials/*",
+    "fonts/*"
+  ],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ]
+}
