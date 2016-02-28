@@ -30,21 +30,48 @@ function downloadLocalStorage(){
 
 function addButton(){
 
-    $(".chat-buttons-container").append("<button id=TExChButton class=\"btnC button\"><b id=TExChButonText>C</b></button>");
+    $(".chat-buttons-container").append("<button id=TExChButton class=\"btnC button\"><b id=TExChButtonText>C</b></button>");
     console.log("BUTTON WAS ADDED");
 }
 
+function test(){}
 function addDiv(){
-    $(".chat-interface").append("<div id=TExChOptions class=TExChDiv><br><b id=TExChText1 style= \"margin-left : 10px\">Key</b><br>\
-<textarea id=TExChTextField1 class=TExChTextField1 ></textarea><button id=TExChClearFields class=AddButton>Clear</button>\
-<br><b id=TExChText2 style=\"margin-left : 10px\">Chatmessage</b><br>\
-<textarea id=TExChTextField2 class=TExChTextField2 ></textarea>  \
-<br><button id=TExChAddToStorage class=AddButton>Add Key</button> <button id=TExChGetStorage class=\"AddButton secondCol\">Get Storage</button> \
-<br><button id=TExChLoadFromStorage class=AddButton>Load Message</button> <button id=TExChSetStorage class=\"AddButton secondCol\">Set Storage</button> \
-<br> <button id=TExChDeleteFromStorage class=AddButton>Delete Entry</button> <button id=TExChLoadBackup class=\"AddButton secondCol\">L. Backup</button> \
-<br> <button id=TExChShowCommands class=AddButton>Show Keys</button> <button id=TExChReloadStorage class=\"AddButton secondCol\">Reload S.</button></div>");
+    $(".chat-interface").append('\
+   <div id=Options-Wrapper class="TExChDiv hidden ">\
+    <div id=TExChTabs class=tabs>\
+     <ul id=TExChTabsUL class=tab-links>\
+            <li id=TExChTabsIL><a id=TExChTabsA href=#TExChFirst>Start</a></li>\
+            <li id=TExChTabsIL><a id=TExChTabsA href=#TExChSecond>Mitte</a></li>\
+            <li id=TExChTabsIL><a id=TExChTabsA href=#TExChLast>Ende</a></li>\
+     </ul>\
+       <div id=TExChTabs class=tab-content>\
+        <div id=TExChFirst class="tab">\
+            <b id=TExChText1 style= "margin-left : 10px">Key</b><br>\
+            <textarea id=TExChTextField1 class=TExChTextField1 ></textarea><button id=TExChClearFields class=AddButton>Clear</button>\
+            <br><b id=TExChText2 style="margin-left : 10px">Chatmessage</b><br>\
+            <textarea id=TExChTextField2 class=TExChTextField2 ></textarea>  \
+            <br><button id=TExChAddToStorage class=AddButton>Add Key</button> <button id=TExChGetStorage class="AddButton secondCol">Get Storage</button> \
+            <br><button id=TExChLoadFromStorage class=AddButton>Load Message</button> <button id=TExChSetStorage class="AddButton secondCol">Set Storage</button> \
+            <br> <button id=TExChDeleteFromStorage class=AddButton>Delete Entry</button> <button id=TExChLoadBackup class="AddButton secondCol">L. Backup</button> \
+            <br> <button id=TExChShowCommands class=AddButton>Show Keys</button> <button id=TExChReloadStorage class="AddButton secondCol">Reload S.</button>\
+        </div>\
+        <div id=TExChSecond class="tab active">\
+        <textarea id=TExChTextField3 class=TExChTextField3 ></textarea>\
+            <div class="tce-scroll-content">\
+                <ol id=\'tce-itemlist\'>\
+                </ol>\
+            </div>\
+        </div>\
+        <div id=TExChLast class=tab>\
+            Ende\
+        </div>\
+        </div>\
+        </div>\
+      </div>');
     var Textbox1 = ".TExChTextField1";
     var Textbox2 = ".TExChTextField2";
+
+
 
     $("#TExChAddToStorage").click(function(){
         var newKey = $(Textbox1).val();
@@ -62,7 +89,7 @@ function addDiv(){
         $(Textbox1).val("");
         $(Textbox1).val("");
         if(!added) localStorageData.array.push([newKey,newMessage]);
-        saveLocalStorage();
+        sortArray();
         $(Textbox2).val("Key: "+ newKey +" was added");
     });
 
@@ -122,6 +149,7 @@ function addDiv(){
 }
 
 
+
 function attachEvent(){
     idOfTextarea = "#"+$(".ember-text-area").attr("id");
     $(idOfTextarea).keyup(function(e){
@@ -162,7 +190,7 @@ function detachEvent(){
 }
 
 function addSwitch(){
-    $(".chat-buttons-container").append("<div class=onoffswitch><input type=checkbox name=onoffswitch class=onoffswitch-checkbox id=myonoffswitch>    <label class=onoffswitch-label for=myonoffswitch>   <span class=onoffswitch-inner></span> <span class=onoffswitch-switch></span> </label></div>");
+    $(".chat-buttons-container").append("<div id=myonoffswitchdiv class=onoffswitch><input type=checkbox name=onoffswitch class=onoffswitch-checkbox id=myonoffswitch>    <label id=myonoffswitch-label class=onoffswitch-label for=myonoffswitch>   <span id=myonoffswitch-inner class=onoffswitch-inner></span> <span id = myonoffswitch-switch class=onoffswitch-switch></span> </label></div>");
 
     $("#myonoffswitch").change(function(){
         if($("#myonoffswitch").prop("checked")) attachEvent();
@@ -173,8 +201,21 @@ function addSwitch(){
     console.log("SWITCH WAS ADDED");
 }
 
-function replaceTags(tag){
+function addTabsFunction(){
+    $('.tabs .tab-links a').on('click', function(e)  {
 
+        var currentAttrValue = jQuery(this).attr('href');
+        console.log(currentAttrValue);
+        // Show/Hide Tabs
+        jQuery('.tabs ' + currentAttrValue).addClass('active').siblings().removeClass('active');
+        // Change/remove current tab to active
+        $(this).parent('li').addClass('active').siblings().removeClass('active');
+        e.preventDefault();
+    });
+    console.log("Tabs functionality was added")
+}
+
+function replaceTags(tag){
 
     //Debug commands
     //console.log("Ich tue was, Tag = "+ tag);
@@ -226,6 +267,48 @@ function specialTag(tag,textArray){
     return output;
 }
 
+function sortArray(){
+    localStorageData.array.sort();
+    saveLocalStorage();
+}
+function dummy(){
+    console.log("dummy");
+}
+function addItemToItemList(name){
+        $("#tce-itemlist").append("<div><div class=\"tce-item\" >"+name+"</div>\
+    <div id=\"menu\">\
+    <ul class='dropdown-outer'>\
+        <li class=topmenu>\
+            <a href=\"\">▾</a>\
+            <ul class='dropdown-inner'>\
+                <li class=\"submenu submenu-edit\">Edit</li>\
+                <li class=\"submenu submenu-del\">Delete</li>\
+                <li class=\"submenu submenu-save\">Save</li>\
+            </ul>\
+        </li>\
+    </ul>\
+    </div>\
+    </div>");
+}
+function updateKeyList(){
+    var Textbox3 = ".TExChTextField3";
+    for(var p=0;p<localStorageData.array.length;p++){
+        addItemToItemList(localStorageData.array[p][0]);
+    }
+    $(".tce-item").click(function(e){
+        for(var m = 0; m<localStorageData.array.length;m++) {
+            if (e.target.textContent == localStorageData.array[m][0]) $(Textbox3).val(localStorageData.array[m][1]);
+        }
+    });
+    $(".submenu-edit").click(function(e){
+       var keyToEdit = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item")[0].textContent;
+        for(var o=0;o<localStorageData.array.length;o++){
+            if(localStorageData.array[o][0] == keyToEdit){
+                localStorageData.array[o][0] = keyToEdit;
+            }
+        }
+    });
+}
 
 
 window.onload = function () {
@@ -235,29 +318,50 @@ window.onload = function () {
         addDiv();
         addSwitch();
         loadLocalStorage();
+        changeTheme();
+        addTabsFunction();
+        updateKeyList()
+
         $("#TExChButton").click(function(){
-            $(".TExChTextField2").attr("maxlength","10000");
-            $(".TExChDiv").toggle("fast");
+            $("#TExChTextField2").attr("maxlength","10000");
+            $("#Options-Wrapper").toggleClass("hidden");
         });
 
-        $('html').click(function (e) {
+       /* $('html').click(function (e) {
             if (e.target.id.substr(0,5) == "TExCh" ) {
                 //do something
             } else {
                 //console.log(e.target.id);
-                $(".TExChDiv").hide("fast");
+                $("#TExChOptions").hide("fast");
             }
+        });*/
+
+        $(document).mouseup(function (e) {
+            var container = $("#Options-Wrapper");
+            if (!container.hasClass("hidden") && e.target.id != "TExChButton" && e.target.id != "TExChButtonText") {
+            if (!container.is(e.target) // if the target of the click isn't the container...
+                && container.has(e.target).length === 0) // ... nor a descendant of the container
+            {
+                container.addClass("hidden");
+            }
+        }
         });
         clearInterval(IID);
         if($("#TExChButton").val() != 3){ clearInterval(IID)}
     },2000)
 };
 
+
+
+
+
+
 function manReload(){
     addButton();
     console.log("ADDED");
     addDiv();
     addSwitch();
+    addTabsFunction();
     loadLocalStorage();
     $("#TExChButton").click(function(){
         $(".TExChTextField2").attr("maxlength","10000");
@@ -273,3 +377,36 @@ function manReload(){
         }
     });
 }
+
+function toggleClass(){
+    $("#TExChAddToStorage").toggleClass("AddButton AddButton2");
+    $("#TExChGetStorage").toggleClass("AddButton AddButton2");
+    $("#TExChLoadFromStorage").toggleClass("AddButton AddButton2");
+    $("#TExChSetStorage").toggleClass("AddButton AddButton2");
+    $("#TExChDeleteFromStorage").toggleClass("AddButton AddButton2");
+    $("#TExChLoadBackup").toggleClass("AddButton AddButton2");
+    $("#TExChShowCommands").toggleClass("AddButton AddButton2");
+    $("#TExChReloadStorage").toggleClass("AddButton AddButton2");
+    $("#TExChClearFields").toggleClass("AddButton AddButton2");
+    $("#Options-Wrapper").toggleClass("TExChDiv TExChDiv2");
+    $("#TExChButton").toggleClass("btnC btnC2");
+    $("#myonoffswitch-label").toggleClass("onoffswitch-label onoffswitch-label2");
+    $("#myonoffswitch-inner").toggleClass("onoffswitch-inner onoffswitch-inner2");
+    $("#myonoffswitch-switch").toggleClass("onoffswitch-switch onoffswitch-switch2");
+    $("#myonoffswitch").toggleClass("onoffswitch-checkbox onoffswitch-checkbox2");
+    $("#myonoffswitchdiv").toggleClass("onoffswitch onoffswitch2");
+}
+
+function changeTheme(){
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+          console.log(request);
+            if(request){
+                if($("#myonoffswitchdiv").hasClass("onoffswitch2") ) toggleClass();
+            } else {
+                if($("#myonoffswitchdiv").hasClass("onoffswitch") ) toggleClass();
+            }
+        });
+}
+
+

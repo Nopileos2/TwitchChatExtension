@@ -22,7 +22,11 @@
       ],
       "css": [
         "css/switch.css",
-        "css/TExChat.css"
+        "css/TExChat.css",
+        "css/switch2.css",
+        "css/TExChat2.css",
+        "css/TestTabCss.css",
+        "css/dropdown.css"
       ]
     }
   ],

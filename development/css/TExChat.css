@@ -1,5 +1,4 @@
 .TExChTextField1 {
-    margin-left: 10px;
     margin-top: 7px;
     resize: none;
     height: 40px;
@@ -7,25 +6,33 @@
 }
 
 .TExChTextField2 {
-    margin-left: 10px;
     margin-top: 7px;
+    margin-bottom: 10px;
     resize: none;
     height: 150px;
-    width: 250px;
+    width: 300px;
+}
+
+.TExChTextField3 {
+    margin-top: 7px;
+    margin-bottom: 20px;
+    resize: none;
+    height: 170px;
+    width: 300px;
 }
 
 .TExChDiv {
     z-index: 9999999;
-    width: 300px;
-    height: 500px;
+    width: 320px;
+    height: 520px;
     border: 1px solid rgb(21, 20, 20);
     margin-bottom: 4.6px;
     position: absolute;
     bottom: 50px;
     background: rgb(35, 35, 35);
     border-radius: 2px;
-    margin-left: 15px;
-    display: none;
+    margin-left: 5px;
+    display: block;
 }
 
 .btnC {
@@ -36,7 +43,7 @@
 .AddButton {
     width: 115px;
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 10px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;

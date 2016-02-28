@@ -1,5 +1,4 @@
 .TExChTextField1 {
-    margin-left: 10px;
     margin-top: 7px;
     resize: none;
     height: 40px;
@@ -7,54 +6,62 @@
 }
 
 .TExChTextField2 {
-    margin-left: 10px;
     margin-top: 7px;
+    margin-bottom: 10px;
     resize: none;
     height: 150px;
-    width: 250px;
+    width: 300px;
 }
 
-.TExChDiv {
-    z-index: 9999999;
+.TExChTextField3 {
+    margin-top: 7px;
+    margin-bottom: 20px;
+    resize: none;
+    height: 170px;
     width: 300px;
-    height: 500px;
-    border: 1px solid rgb(21, 20, 20);
+}
+
+.TExChDiv2 {
+    z-index: 9999999;
+    width: 320px;
+    height: 520px;
+    border: 1px solid rgb(241, 238, 238);
     margin-bottom: 4.6px;
     position: absolute;
     bottom: 50px;
-    background: rgb(35, 35, 35);
+    background: rgb(250, 250, 250);
     border-radius: 2px;
-    margin-left: 15px;
-    display: none;
+    margin-left: 5px;
+    display: block;
 }
 
-.btnC {
-    color: #AAAAAA!important;
+.btnC2 {
+    color: #6441A5!important;
     width: 38px;
 }
 
-.AddButton {
+.AddButton2 {
     width: 115px;
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 10px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     font-family: Arial;
-    color: #d3d3d3;
+    color: #000000;
     font-size: 12px;
-    background: #5b5b5b;
+    background: #F0F0F0;
     padding: 10px 15px 10px 15px;
-    border: solid #151515 1.5px;
+    border: solid #F1EEEE 1.5px;
     text-decoration: none;
 }
 
-.AddButton:hover {
-    background: #161616;
+.AddButton2:hover {
+    background: #C8C8C8;
     text-decoration: none;
 }
 
-.secondCol {
+.secondCol2 {
     float: right;
     margin-right: 20px;
 }

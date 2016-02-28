@@ -59,6 +59,7 @@
 .onoffswitch-switch {
     display: block;
     width: 18px;
+    height: 18px;
     margin: 1px;
     background: #1E1E1E;
     position: absolute;
