@@ -3,6 +3,7 @@ var idOfTextarea;
 var localStorageData = {};
 var localStorageKey = "TCExt";
 var ItemInEdit = false;
+var currentStyle = "dark";
 
 //////////////
 function loadLocalStorage(){
@@ -206,7 +207,6 @@ function addTabsFunction(){
     $('.tabs .tab-links a').on('click', function(e)  {
 
         var currentAttrValue = jQuery(this).attr('href');
-        console.log(currentAttrValue);
         // Show/Hide Tabs
         jQuery('.tabs ' + currentAttrValue).addClass('active').siblings().removeClass('active');
         // Change/remove current tab to active
@@ -276,19 +276,27 @@ function dummy(){
     console.log("dummy");
 }
 
-function toggleVisibilty(Elements){
-    Elements.find('.submenu-edit').toggleClass("submenu-hide");
-    Elements.find('.submenu-save').toggleClass("submenu-hide");
-    Elements.find('.submenu-cancle').toggleClass("submenu-hide");
-    Elements.find('.submenu-del').toggleClass("submenu-hide");
+function toggleVisibilty(Elements,mode){
+    if(mode == "toggle") {
+        Elements.find('.submenu-edit').toggleClass("submenu-hide");
+        Elements.find('.submenu-save').toggleClass("submenu-hide");
+        Elements.find('.submenu-cancle').toggleClass("submenu-hide");
+        Elements.find('.submenu-del').toggleClass("submenu-hide");
+    }
+    if(mode == "reset"){
+        Elements.find('.submenu-edit').removeClass("submenu-hide");
+        Elements.find('.submenu-save').addClass("submenu-hide");
+        Elements.find('.submenu-cancle').addClass("submenu-hide");
+        Elements.find('.submenu-del').removeClass("submenu-hide");
+    }
 }
 
 function addItemToItemList(name){
-        $("#tce-itemlist").append("<div><div class=\"tce-item-div\"><b class=tce-item>"+name+"</b></div>\
+        $("#tce-itemlist").append("<div class=tce-element-top><div class=\"tce-item-div\"><b class=\"tce-item-show tce-item"+getTheme("string")+"\">"+name+"</b></div>\
     <div id=\"menu\">\
     <ul class='dropdown-outer'>\
-        <li class=topmenu>\
-            <a class='topmenu-options'>▹</a>\
+        <li class=topmenu"+getTheme("string")+">\
+            <a class=\"topmenu-options-show topmenu-options"+getTheme("string")+"\">></a>\
             <ul class='dropdown-inner'>\
                 <li class=\"submenu submenu-edit\">Edit</li>\
                 <li class=\"submenu submenu-save submenu-hide\">Save</li>\
@@ -320,43 +328,62 @@ function updateKeyList(){
     deleteItemList();
     var oldKey ="";
     var Textbox3 = ".TExChTextField3";
+    var openMenu;
     for(var p=0;p<localStorageData.array.length;p++){
         addItemToItemList(localStorageData.array[p][0]);
     }
-    $(".tce-item").click(function(e){
+
+    $(".tce-item-show").click(function(e){
          $(Textbox3).val(getStorageEntry(e.target.textContent));
     });
-    $(".topmenu-options").click(function(e){
+
+    $(".topmenu-options-show").click(function(e){
+
+        //Hide all open "dropdown" menus
         $(".dropdown-inner").css("display","none");
-        toggleVisibilty($(".edit-input").parent().parent());
-        $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
-        var targetMenu = e.target.parentNode.getElementsByClassName("dropdown-inner")[0];
-        if(targetMenu.style.display =='inline'){ targetMenu.style.display ="none"; }
-        else {
-            targetMenu.style.display = "inline";
+        $(Textbox3).attr("disabled","disabled");
+
+        //if there is an open edit, close it and update the keylist
+        if($(".edit-input").length != 0) {
+            updateKeyList();
         }
+
+        //show the message, because why not
+        $(Textbox3).val(getStorageEntry($(e.target).parents(".tce-element-top").find(".tce-item-show").text()));
+
+        //reset, so you see edit/delete, incase you closed a menu while in edit mode
+        toggleVisibilty($(e.target).parent(),"reset");
+
+        //if you click on the same menu twice it will open and close
+        var targetMenu = e.target.parentNode.getElementsByClassName("dropdown-inner")[0];
+        if (targetMenu != openMenu)  {
+            targetMenu.style.display = "inline";
+            openMenu = targetMenu;
+        } else if(targetMenu==openMenu) openMenu ="";
+
     });
 
    $(".submenu-edit").click(function(e){
        if(ItemInEdit) {
-           toggleVisibilty($(".edit-input").parent().parent());
-           $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
+           toggleVisibilty($(".edit-input").parent().parent(),"toggle");
+           $(".edit-input").parent().html("<b class=\"tce-item-show tce-item"+getTheme("string")+"\">"+oldKey+"</b>");
        }
         ItemInEdit=true;
-        var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
+        var ElementToEdit = $(e.target).parents(".tce-element-top").find(".tce-item-div");
         var ElementsToShowAndHide = $(e.target).parent();
-        toggleVisibilty(ElementsToShowAndHide);
-        var keyToEdit = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
+        toggleVisibilty(ElementsToShowAndHide,"toggle");
+        var keyToEdit = ElementToEdit.find(".tce-item-show").text();
         oldKey = keyToEdit;
 
        $(Textbox3).removeAttr("disabled");
         //ElementToEdit.textContent = "";
-        ElementToEdit.innerHTML = '<input class="edit-input" maxlength=25 required="" value='+keyToEdit+'>';
+        ElementToEdit.html('<input class="edit-input" maxlength=25 required="" value='+keyToEdit+'>');
        $(Textbox3).val(getStorageEntry(keyToEdit));
     });
 
     $(".submenu-save").click(function(e){
-        var keyToSave = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0].getElementsByClassName('edit-input')[0].value;
+        var keyToSave = $(e.target).parents(".tce-element-top").find(".edit-input").val();
+        //var keyToSave = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0].getElementsByClassName('edit-input')[0].value;
         var newMessage = $(Textbox3).val();
         var added = false;
         for(var k = 0; k<localStorageData.array.length;k++){
@@ -378,13 +405,12 @@ function updateKeyList(){
 
     $(".submenu-cancle").click(function(e){
         $(Textbox3).attr("disabled","disabled");
-        $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
-        toggleVisibilty($(e.target).parent());
+        updateKeyList();
+        toggleVisibilty($(e.target).parent(),"toggle");
     });
 
     $(".submenu-del").click(function(e){
-        var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
-        var keyToDelete = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
+        var keyToDelete =$(e.target).parents(".tce-element-top").find(".tce-item-show").text();
         $(Textbox3).val("");
         deleteEntry(keyToDelete);
         updateKeyList();
@@ -459,7 +485,13 @@ function manReload(){
     });
 }
 
+function getTheme(mode){
+    if(mode = "string") {
+        if(currentStyle == "dark") return ""; else return "2";
+    }
+}
 function toggleClass(){
+    updateKeyList();
     $("#TExChAddToStorage").toggleClass("AddButton AddButton2");
     $("#TExChGetStorage").toggleClass("AddButton AddButton2");
     $("#TExChLoadFromStorage").toggleClass("AddButton AddButton2");
@@ -483,9 +515,17 @@ function changeTheme(){
         function(request, sender, sendResponse) {
           console.log(request);
             if(request){
-                if($("#myonoffswitchdiv").hasClass("onoffswitch2") ) toggleClass();
+                if($("#myonoffswitchdiv").hasClass("onoffswitch2") ) {
+                    currentStyle = "dark";
+                    toggleClass();
+
+                }
             } else {
-                if($("#myonoffswitchdiv").hasClass("onoffswitch") ) toggleClass();
+                if($("#myonoffswitchdiv").hasClass("onoffswitch") ){
+                    currentStyle = "default";
+                    toggleClass();
+
+                }
             }
         });
 }

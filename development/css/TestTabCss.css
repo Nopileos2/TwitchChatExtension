@@ -97,6 +97,21 @@ ol  {
     float:left;
 }
 
+.tce-item2:hover{
+    color: #aeb1ff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tce-item2{
+    color: #3c3a46;
+    text-decoration: none;
+    display: inline;
+    width: 175px;
+    font-size: 12px;
+    float:left;
+}
+
 .tce-item-div{
     display:inline;
 }

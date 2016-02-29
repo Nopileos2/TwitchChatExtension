@@ -19,6 +19,7 @@
     resize: none;
     height: 170px;
     width: 300px;
+    border: 1px solid #606060
 }
 .TExChTextField3::-webkit-scrollbar{
     display:none;
@@ -27,7 +28,7 @@
     z-index: 9999999;
     width: 320px;
     height: 520px;
-    border: 1px solid rgb(21, 20, 20);
+    border: 1px solid #3c3c3c;
     margin-bottom: 4.6px;
     position: absolute;
     bottom: 50px;
