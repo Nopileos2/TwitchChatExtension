@@ -67,6 +67,10 @@ ol  {
 }
 
 .edit-input{
-    width: 160px;
+    width: 180px;
     font-size: 12px;
+}
+
+.submenu-hide{
+    display:none;
 }

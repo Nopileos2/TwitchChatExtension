@@ -61,13 +61,13 @@ li.active a, li.active a:hover {
     height: 20px;
 }
 .tce-scroll-content::-webkit-scrollbar-thumb {
-    background: #e1e1e1;
+    background: #7550ba;
     border: 52px none #ffffff;
     border-radius: 1px;
 }
 
 .tce-scroll-content::-webkit-scrollbar-track {
-    background: #989898;
+    background: #c7c7c7;
     border: 53px none #ffffff;
     border-radius: 44px;
 }
@@ -92,7 +92,7 @@ ol  {
     color: #d3d3d3;
     text-decoration: none;
     display: inline;
-    width: 155px;
+    width: 175px;
     font-size: 12px;
     float:left;
 }

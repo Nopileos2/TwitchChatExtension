@@ -275,6 +275,14 @@ function sortArray(){
 function dummy(){
     console.log("dummy");
 }
+
+function toggleVisibilty(Elements){
+    Elements.find('.submenu-edit').toggleClass("submenu-hide");
+    Elements.find('.submenu-save').toggleClass("submenu-hide");
+    Elements.find('.submenu-cancle').toggleClass("submenu-hide");
+    Elements.find('.submenu-del').toggleClass("submenu-hide");
+}
+
 function addItemToItemList(name){
         $("#tce-itemlist").append("<div><div class=\"tce-item-div\"><b class=tce-item>"+name+"</b></div>\
     <div id=\"menu\">\
@@ -283,8 +291,9 @@ function addItemToItemList(name){
             <a class='topmenu-options'>▹</a>\
             <ul class='dropdown-inner'>\
                 <li class=\"submenu submenu-edit\">Edit</li>\
+                <li class=\"submenu submenu-save submenu-hide\">Save</li>\
+                <li class=\"submenu submenu-cancle submenu-hide\">Cancle</li>\
                 <li class=\"submenu submenu-del\">Delete</li>\
-                <li class=\"submenu submenu-save\">Save</li>\
             </ul>\
         </li>\
     </ul>\
@@ -318,6 +327,9 @@ function updateKeyList(){
          $(Textbox3).val(getStorageEntry(e.target.textContent));
     });
     $(".topmenu-options").click(function(e){
+        $(".dropdown-inner").css("display","none");
+        toggleVisibilty($(".edit-input").parent().parent());
+        $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
         var targetMenu = e.target.parentNode.getElementsByClassName("dropdown-inner")[0];
         if(targetMenu.style.display =='inline'){ targetMenu.style.display ="none"; }
         else {
@@ -327,17 +339,19 @@ function updateKeyList(){
 
    $(".submenu-edit").click(function(e){
        if(ItemInEdit) {
+           toggleVisibilty($(".edit-input").parent().parent());
            $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
        }
         ItemInEdit=true;
-
         var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
+        var ElementsToShowAndHide = $(e.target).parent();
+        toggleVisibilty(ElementsToShowAndHide);
         var keyToEdit = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
         oldKey = keyToEdit;
 
        $(Textbox3).removeAttr("disabled");
         //ElementToEdit.textContent = "";
-        ElementToEdit.innerHTML = '<input class="edit-input" maxlength=20 required="" value='+keyToEdit+'>';
+        ElementToEdit.innerHTML = '<input class="edit-input" maxlength=25 required="" value='+keyToEdit+'>';
        $(Textbox3).val(getStorageEntry(keyToEdit));
     });
 
@@ -362,9 +376,16 @@ function updateKeyList(){
         ItemInEdit = false;
     });
 
+    $(".submenu-cancle").click(function(e){
+        $(Textbox3).attr("disabled","disabled");
+        $(".edit-input").parent().html("<b class=tce-item>"+oldKey+"</b>");
+        toggleVisibilty($(e.target).parent());
+    });
+
     $(".submenu-del").click(function(e){
         var ElementToEdit =e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("tce-item-div")[0];
         var keyToDelete = ElementToEdit.getElementsByClassName("tce-item")[0].textContent;
+        $(Textbox3).val("");
         deleteEntry(keyToDelete);
         updateKeyList();
     });
@@ -383,7 +404,7 @@ window.onload = function () {
         updateKeyList();
 
         $("#TExChButton").click(function(){
-            $("#TExChTextField1").attr("maxlength","20");
+            $("#TExChTextField1").attr("maxlength","25");
             $("#TExChTextField2").attr("maxlength","10000");
             $("#Options-Wrapper").toggleClass("hidden");
         });
