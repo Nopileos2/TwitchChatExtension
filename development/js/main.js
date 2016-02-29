@@ -2,8 +2,9 @@
 var idOfTextarea;
 var localStorageData = {};
 var localStorageKey = "TCExt";
+var localStorageCurrentStyleKey = 'tce-currentStyle';
 var ItemInEdit = false;
-var currentStyle = "dark";
+var currentStyle ;
 
 //////////////
 function loadLocalStorage(){
@@ -29,6 +30,18 @@ function downloadLocalStorage(){
     saveAs(blob, "localStorageSave.json");
 }
 
+function loadCurrentStyle(){
+    try{
+        currentStyle = localStorage[localStorageCurrentStyleKey];
+    } catch(e){
+        localStorage[localStorageCurrentStyleKey] = "default";
+        currentStyle = "default";
+    }
+}
+
+function saveCurrentStyle(){
+    localStorage[localStorageCurrentStyleKey] = currentStyle;
+}
 function addButton(){
 
     $(".chat-buttons-container").append("<button id=TExChButton class=\"btnC button\"><b id=TExChButtonText>C</b></button>");
@@ -64,15 +77,26 @@ function addDiv(){
             </div>\
         </div>\
         <div id=TExChLast class=tab>\
-            Ende\
-        </div>\
-        </div>\
-        </div>\
-      </div>');
+               <div style=\"width:500px; height:100px;\"></div><div><div id=myonoffswitchdiv-settings class=onoffswitch-settings><input type=checkbox name=onoffswitch class=onoffswitch-checkbox id=myonoffswitch-settings>    <label id=myonoffswitch-label-settings class=onoffswitch-label for=myonoffswitch-settings>   <span id=myonoffswitch-inner-settings class=onoffswitch-inner></span> <span id = myonoffswitch-switch-settings class=onoffswitch-switch></span> </label></div>Darkmode on/off</div>\
+            </div>\
+            </div>\
+            </div>\
+          </div>');
     var Textbox1 = ".TExChTextField1";
     var Textbox2 = ".TExChTextField2";
 
-
+    $("#myonoffswitch-settings").change(function(){
+        if($("#myonoffswitch-settings").prop("checked")){
+            currentStyle="dark";
+            saveCurrentStyle();
+            toggleClass();
+        }
+        else {
+            currentStyle="default";
+            saveCurrentStyle();
+            toggleClass();
+        }
+    });
 
     $("#TExChAddToStorage").click(function(){
         var newKey = $(Textbox1).val();
@@ -197,7 +221,6 @@ function addSwitch(){
     $("#myonoffswitch").change(function(){
         if($("#myonoffswitch").prop("checked")) attachEvent();
         else detachEvent();
-
     });
 
     console.log("SWITCH WAS ADDED");
@@ -417,6 +440,20 @@ function updateKeyList(){
     });
 }
 
+function setStyle(){
+    loadCurrentStyle();
+    if(currentStyle=="dark") {
+        $("#myonoffswitch-settings").prop("checked",true);
+        if($("#myonoffswitchdiv").hasClass("onoffswitch2")){
+            toggleClass();
+        }
+    } else if(currentStyle=="default"){
+        $("#myonoffswitch-settings").prop("checked",false)
+        if($("#myonoffswitchdiv").hasClass("onoffswitch")){
+            toggleClass();
+        }
+    }
+}
 
 window.onload = function () {
     var IID = setInterval(function(){
@@ -428,6 +465,7 @@ window.onload = function () {
         changeTheme();
         addTabsFunction();
         updateKeyList();
+        setStyle();
 
         $("#TExChButton").click(function(){
             $("#TExChTextField1").attr("maxlength","25");
@@ -508,6 +546,11 @@ function toggleClass(){
     $("#myonoffswitch-switch").toggleClass("onoffswitch-switch onoffswitch-switch2");
     $("#myonoffswitch").toggleClass("onoffswitch-checkbox onoffswitch-checkbox2");
     $("#myonoffswitchdiv").toggleClass("onoffswitch onoffswitch2");
+    $("#myonoffswitch-label-settings").toggleClass("onoffswitch-label onoffswitch-label2");
+    $("#myonoffswitch-inner-settings").toggleClass("onoffswitch-inner onoffswitch-inner2");
+    $("#myonoffswitch-switch-settings").toggleClass("onoffswitch-switch onoffswitch-switch2");
+    $("#myonoffswitch-settings").toggleClass("onoffswitch-checkbox onoffswitch-checkbox2");
+    $("#myonoffswitchdiv-settings").toggleClass("onoffswitch-settings onoffswitch-settings2");
 }
 
 function changeTheme(){

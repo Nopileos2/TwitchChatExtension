@@ -18,10 +18,12 @@
       "js": [
         "js/main.js",
         "js/jquery-2.2.0.min.js",
-        "js/FileSaver.js"
+        "js/FileSaver.js",
+        "js/settings.js"
       ],
       "css": [
         "css/switch.css",
+        "css/switch-settings.css",
         "css/TExChat.css",
         "css/switch2.css",
         "css/TExChat2.css",
